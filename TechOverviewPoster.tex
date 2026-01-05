@@ -1,0 +1,265 @@
+%!TEX program = pdflatex
+\documentclass[a4paper,landscape]{article}
+
+% ============================================================================
+% PACKAGES
+% ============================================================================
+\usepackage[landscape,margin=0.5cm,top=0.4cm,bottom=0.3cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}                         % Helvetica font
+\renewcommand{\familydefault}{\sfdefault}   % Use sans-serif as default
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tabularray}                     % Modern tables with easy styling
+\usepackage{anyfontsize}
+\usepackage{hyperref}
+\usepackage{pdfrender}
+
+% ============================================================================
+% COLORS
+% ============================================================================
+\definecolor{subtletext}{gray}{0.45}
+\definecolor{headerbg}{gray}{0.82}
+\definecolor{rowbg}{gray}{0.95}
+
+% ============================================================================
+% CUSTOM COMMANDS
+% ============================================================================
+\newcommand{\cellmargin}{2pt} 
+
+% Logo with fallback
+\newcommand{\logo}[1]{%
+  \IfFileExists{logos/#1.pdf}{%
+    \includegraphics[height=0.6cm]{logos/#1.pdf}%
+  }{%
+    \IfFileExists{logos/#1.png}{%
+      \includegraphics[height=0.6cm]{logos/#1.png}%
+    }{%
+      \textbf{?}%
+    }%
+  }%
+} 
+
+% Small inline logo (for cells)
+\newcommand{\smalllogo}[1]{%
+  \IfFileExists{logos/#1.pdf}{%
+    \includegraphics[height=0.4cm]{logos/#1.pdf}%
+  }{%
+    \IfFileExists{logos/#1.png}{%
+      \includegraphics[height=0.4cm]{logos/#1.png}%
+    }{%
+    }%
+  }%
+}
+
+% Product cell: logo + name (bold) + description (subtle)
+\newcommand{\product}[3]{%
+  \begin{minipage}{\linewidth}%
+    \centering%
+    \vspace{\cellmargin}%
+    \smalllogo{#1}\\[-4pt]% Tightened distance
+    {\fontsize{9}{10}\selectfont\textbf{#2}}\\[-3pt]% Tightened distance
+    {\fontsize{7}{8}\selectfont\color{subtletext}#3}%
+    \vspace{\cellmargin}%
+\end{minipage}%
+}
+
+% Product cell with multiple logos
+\newcommand{\productmulti}[5]{%
+  \begin{minipage}{\linewidth}%
+    \centering%
+    \vspace{\cellmargin}%
+    \smalllogo{#1}\hspace{2pt}\smalllogo{#2}\hspace{2pt}\smalllogo{#3}\\[-4pt]%
+    {\fontsize{9}{10}\selectfont\textbf{#4}}\\[-3pt]%
+    {\fontsize{7}{8}\selectfont\color{subtletext}#5}%
+    \vspace{\cellmargin}%
+\end{minipage}%
+}
+
+% Empty cell placeholder
+\newcommand{\emptycell}{%
+\begin{minipage}{\linewidth}%
+    \centering%
+    \vspace{\cellmargin}%
+    \color{subtletext}—%
+    \vspace{\cellmargin}%
+\end{minipage}%
+}
+
+% Category label (row header)
+\newcommand{\category}[1]{%
+\begin{minipage}{\linewidth}%
+    \vspace{\cellmargin}%
+    \raggedright%
+    {\fontsize{9}{10}\selectfont\textbf{#1}}%
+    \vspace{\cellmargin}%
+  \end{minipage}%
+}
+
+% Company label (column header)
+\newcommand{\company}[2]{%
+  \begin{minipage}{\linewidth}%
+    \centering%
+    \vspace{\cellmargin}%
+    \ifx&#1&\else\logo{#1}\\[0pt]\fi%
+    {\fontsize{9}{10}\selectfont\textbf{#2}}%
+    \vspace{\cellmargin}%
+  \end{minipage}%
+}
+
+% ============================================================================
+% DOCUMENT
+% ============================================================================
+\hypersetup{
+  pdftitle={Technologie- und Produktuebersicht},
+  pdfauthor={Florian}
+}
+
+\begin{document}
+\pagestyle{empty}
+
+% ----------------------------------------------------------------------------
+% TITLE
+% ----------------------------------------------------------------------------
+\begin{center}
+  {\Large\pdfrender{TextRenderingMode=FillStroke,LineWidth=0.35pt}\bfseries\fontseries{bx}\selectfont Technologie- \& Produktübersicht}
+\end{center}
+
+% \vspace{0.1cm}
+
+% ----------------------------------------------------------------------------
+% MAIN TABLE
+% ----------------------------------------------------------------------------
+\begin{center}
+\begin{tblr}{
+  width = \linewidth,
+  colspec = {X[l,m] *{5}{X[c,m]}},
+  colsep = 2pt,
+  rowsep = 1.5pt,
+  column{1} = {leftsep=6pt},
+  row{odd} = {bg=rowbg},
+  row{1} = {bg=headerbg, font=\bfseries, valign=m},
+  cells = {valign=m}, % Vertically align all cells center
+  hlines = {white, 1pt}, % "Invisible" borders for spacing
+  vlines = {white, 1pt},
+}
+% Header row
+& 
+\company{microsoft}{Microsoft} &
+\company{apple}{Apple} &
+\company{google}{Google} &
+\company{amazon}{Amazon} &
+\company{}{Andere} \\
+
+% Row 1: Computer System
+\category{Betriebssystem (PC)} &
+\product{windows}{Windows}{Desktop \& Laptop System} &
+\product{macos}{macOS}{Betriebssystem für Macs} &
+\product{chrome}{ChromeOS}{Web-basiertes System} &
+\emptycell &
+\product{linux}{Linux}{Kostenlos \& Open-Source} \\
+
+% Row 2: Phone & Tablet
+\category{Smartphone \& Tablet} &
+\emptycell &
+\product{ios}{iOS / iPadOS}{iPhone \& iPad System} &
+\product{android}{Android}{Meistgenutztes System} &
+\product{firetv}{Fire OS}{Amazon Tablets \& Geräte} &
+\emptycell \\
+
+% Row 3: Email & Calendar
+\category{E-Mail \& Kalender} &
+\product{outlook}{Outlook}{E-Mail \& Kalender} &
+\product{apple_mail}{Mail \& Kalender}{Apple Standard-Apps} &
+\product{gmail}{Gmail}{Kostenloser E-Mail-Dienst} &
+\emptycell &
+\product{protonmail}{ProtonMail}{Sichere E-Mails} \\
+
+% Row 4: Documents
+\category{Dokumente} &
+\productmulti{word}{excel}{powerpoint}{Office 365}{Word, Excel, PowerPoint} &
+\productmulti{pages}{numbers}{keynote}{iWork}{Pages, Numbers, Keynote} &
+\productmulti{gdocs}{sheets}{slides}{Google Workspace}{Docs, Sheets, Slides} &
+\emptycell &
+\product{libreoffice}{LibreOffice}{Kostenlose Office-Suite} \\
+
+% Row 5: Video Calls
+\category{Videokonferenzen} &
+\product{teams}{Teams}{Meetings \& Zusammenarbeit} &
+\product{facetime}{FaceTime}{Videoanrufe für Apple} &
+\product{meet}{Google Meet}{Online-Meetings} &
+\emptycell &
+\product{zoom}{Zoom}{Populäre Meeting-Lösung} \\
+
+% Row 6: Cloud Storage
+\category{Cloud-Speicher} &
+\product{onedrive}{OneDrive}{Dateien in der Cloud} &
+\product{icloud}{iCloud Drive}{Apple Cloud-Speicher} &
+\product{gdrive}{Google Drive}{Kostenloser Speicher} &
+\product{amazon}{Amazon Drive}{Cloud-Speicher} &
+\product{dropbox}{Dropbox}{Dateien teilen \& synchronisieren} \\
+
+% Row 7: Browser
+\category{Webbrowser} &
+\product{edge}{Edge}{Windows Standard-Browser} &
+\product{safari}{Safari}{Apple Standard-Browser} &
+\product{chrome}{Chrome}{Beliebter Browser} &
+\product{silk}{Silk}{Browser für Fire-Geräte} &
+\product{firefox}{Firefox}{Datenschutz-Browser} \\
+
+% Row 8: Photos
+\category{Fotos} &
+\product{microsoftphotos}{Fotos}{Windows Fotoverwaltung} &
+\product{applephotos}{Apple Photos}{Fotos speichern \& bearbeiten} &
+\product{gphotos}{Google Photos}{Intelligente Sicherung} &
+\product{amazon}{Amazon Photos}{Speicher für Prime-Mitglieder} &
+\emptycell \\
+
+% Row 9: PDF
+\category{PDF-Reader} &
+\product{edge}{Edge}{Integrierter PDF-Viewer} &
+\product{preview}{Preview}{Integrierter Viewer} &
+\product{chrome}{Chrome}{Integrierter PDF-Viewer} &
+\emptycell &
+\product{acrobat}{Adobe Acrobat}{Profi-PDF-Werkzeug} \\
+
+% Row 10: Music
+\category{Musik-Streaming} &
+\emptycell &
+\product{applemusic}{Apple Music}{Musik-Streaming} &
+\product{ytmusic}{YouTube Music}{Musik \& Videos} &
+\product{amazonmusic}{Amazon Music}{Prime Musik-Dienst} &
+\product{spotify}{Spotify}{Marktführer im Streaming} \\
+
+% Row 11: Video
+\category{Video-Streaming} &
+\emptycell &
+\product{appletv}{Apple TV+}{Originalserien \& Filme} &
+\product{youtube}{YouTube}{Kostenlose Videoplattform} &
+\product{primevideo}{Prime Video}{Filme \& Serien} &
+\product{netflix}{Netflix}{Beliebter Streaming-Dienst} \\
+
+% Row 12: Messaging
+\category{Messenger} &
+\emptycell &
+\product{imessage}{iMessage}{Apple-zu-Apple Nachrichten} &
+\product{googlemessages}{Messages}{Android Nachrichten-App} &
+\emptycell &
+\product{whatsapp}{WhatsApp}{Plattformübergreifender Chat} \\
+
+% Row 13: AI Assistant
+\category{KI-Assistent} &
+\product{copilot}{Copilot}{KI-Helfer in Windows} &
+\product{siri}{Siri}{Apples Sprachassistent} &
+\product{gemini}{Gemini}{Googles KI-Assistent} &
+\product{alexa}{Alexa}{Sprachsteuerung \& Smart Home} &
+\product{openai}{ChatGPT}{Prominenter KI-Chatbot} \\
+\end{tblr}
+\end{center}
+
+% \vspace{0.1cm}
+\begin{center}
+  {\fontsize{5}{6}\selectfont\color{subtletext} Stand: Januar 2026 · Alle Produktnamen und Logos sind Marken der jeweiligen Eigentümer}
+\end{center}
+
+\end{document}
