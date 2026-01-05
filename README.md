@@ -4,7 +4,7 @@ A comprehensive one-page overview of major technology products and services from
 
 ## Preview
 
-![Tech Overview Poster](TechOverviewPoster.pdf)
+![Tech Overview Poster](showcase.png)
 
 The poster provides a side-by-side comparison of products across categories including:
 - Operating Systems (PC, Mobile)
